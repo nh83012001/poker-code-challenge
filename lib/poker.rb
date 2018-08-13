@@ -1002,7 +1002,6 @@ class Poker
 
   # splitting by the space and creating array of hands
   @allCards = @cards.split(" ")
-  # @allCards = AllCard:CARDS.split(" ")
   @allHands = []
   @allHands.push(@allCards.each_slice(5).to_a)
 

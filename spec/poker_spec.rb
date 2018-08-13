@@ -90,13 +90,13 @@ describe Poker do
     end
   end
 
-  # describe ".rank" do
-  #   context "given a hand object" do
-  #     it "returns a 1-10 ranking" do
-  #       expect(Poker.rank({:hand=>["AS", "KD", "3D", "JD", "8H"], :descendingValue=>[14, 13, 11, 8, 3], :flush=>false, :straight=>false, :pair=>false, :largestPair=>1, :uniqueValues=>5}{:hand=>["7C", "8C", "5C", "QD", "6C"], :descendingValue=>[12, 8, 7, 6, 5], :flush=>false, :straight=>false, :pair=>false, :largestPair=>1, :uniqueValues=>5})).to eql(1)
-  #     end
-  #   end
-  # end
+  describe ".rank" do
+    context "given a hand object" do
+      it "returns a 1-10 ranking" do
+        expect(Poker.rank({:hand=>["7C", "8C", "5C", "QD", "6C"], :descendingValue=>[12, 8, 7, 6, 5], :flush=>false, :straight=>false, :pair=>false, :largestPair=>1, :uniqueValues=>5})).to eql(1)
+      end
+    end
+  end
 
 
 
