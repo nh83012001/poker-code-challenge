@@ -53,13 +53,13 @@ describe Poker do
   end
   describe ".largestPair" do
     context "given an object of key values for a hand with a pair returns " do
-      it "returns card value of highest pair" do
+      it "returns array of card values with higest pair" do
         expect(Poker.largestPair({8=>3, 14=>2})).to eql([8,3])
       end
     end
     context "given an object of key values for a hand with a pair returns" do
-      it "returns card value of highest pair" do
-        expect(Poker.largestPair({5=>2, 14=>2, 9=>1})).to eql([14,2])
+      it "returns array of card values with highest pair" do
+        expect(Poker.largestPair({5=>2, 14=>2, 9=>1})).to eql([[14,2],[5,2]])
       end
     end
   end
@@ -86,7 +86,7 @@ describe Poker do
     end
     context "given a hand object with two pair" do
       it "returns a 3" do
-        expect(Poker.rank({:pair=>{12=>1, 7=>2, 4=>2}, :largestPair=>[4, 2], :uniqueValues=>3})).to eql(3)
+        expect(Poker.rank({:pair=>{12=>1, 7=>2, 4=>2}, :largestPair=>[[7,2][4,2]], :uniqueValues=>3})).to eql(3)
       end
     end
     context "given a hand object with three of a kind" do
@@ -125,11 +125,5 @@ describe Poker do
       end
     end
   end
-
-  #Testing tie breakers
-
-
-
-
 
 end

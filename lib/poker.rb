@@ -1,3 +1,5 @@
+require 'cards.txt'
+
 class Poker
   @cards = "8C TS KC 9H 4S 7D 2S 5D 3S AC
   5C AD 5D AC 9C 7C 5H 8D TD KS
@@ -1183,8 +1185,7 @@ class Poker
 
   # tiebreaker for those that are by highest pair
   def self.highPairTiebreak (hand)
-    # print @player2Hands[hand]
-
+    print hand
    if @player1Hands[hand][:largestPair][0] > @player2Hands[hand][:largestPair][0] && @player2Hands[hand][:rank] != 3
       @player1Wins = @player1Wins +1
     elsif @player2Hands[hand][:largestPair][0] > @player1Hands[hand][:largestPair][0]
@@ -1211,8 +1212,6 @@ class Poker
     end
   end
 
-
-
   #determining a winner for each hand
   @i=1;
   @player1Wins = 0;
@@ -1232,7 +1231,7 @@ class Poker
     elsif @player1Hands[hand][:rank] == @player2Hands[hand][:rank] &&  [2,3,4,7,8].include?(@player2Hands[hand][:rank])
       highPairTiebreak(hand)
     else
-      print 'technically this would be for 2 royal flushes'
+      print 'You tie with 2 royal flushes'
     end
   @i = @i+1
   end
