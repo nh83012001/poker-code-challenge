@@ -1067,10 +1067,11 @@ class Poker
     def self.rank(handObject)
       # print handObject
       # Royal Flush: Ten, Jack, Queen, King, Ace, in same suit.
-      if (handObject[:straight] == true and handObject[:flush] == true and handObject[:hiCard] == 14 and handObject[:minCard] == 10)
+
+      if (handObject[:straight] == true && handObject[:flush] == true && handObject[:descendingValue][0] == 14 && handObject[:descendingValue][1] == 13)
       return 10
       # Straight Flush: All cards are consecutive values of same suit.
-      elsif (handObject[:straight] == true and handObject[:flush])
+    elsif (handObject[:straight] == true && handObject[:flush])
       return 9
       # Four of a Kind: Four cards of the same value.
       elsif (handObject[:largestPair][1] == 4)
@@ -1171,6 +1172,8 @@ class Poker
 
   # tiebreaker for those that are by highest pair
   def self.highPairTiebreak (hand)
+    # print @player2Hands[hand]
+
    if @player1Hands[hand][:largestPair][0] > @player2Hands[hand][:largestPair][0]
       @player1Wins = @player1Wins +1
     elsif @player2Hands[hand][:largestPair][0] > @player1Hands[hand][:largestPair][0]
