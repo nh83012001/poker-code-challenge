@@ -1027,7 +1027,7 @@ class Poker
       minVal = hand.min
       # checking for hi and lo ace
        if hand.include?(14)
-        if (minVal == 2 || minVal == 10)
+        if (minVal == 2)
           straight = hand &([minVal,minVal+1,minVal+2,minVal+3])
           return straight.length == 4
         else
@@ -1053,8 +1053,13 @@ class Poker
     def self.largestPair(pairObject)
       if (pairObject != false)
         sortedObject = pairObject.sort_by {|k,v| k}.reverse
-        print sortedObject
-        sortedObject.max_by{|k,v| v}
+        sortedByPair = sortedObject.sort_by{|k,v| v}.reverse
+        # if 2 pair, Im making an array with both values and putting higher value in 0 index
+        if (sortedByPair[0][1]==2 && sortedByPair[1][1]==2)
+          twoPairsArray = [sortedByPair[1], sortedByPair[0]]
+          return twoPairsArray
+        end
+        return sortedObject.max_by{|k,v| v}
       else
       return 1
       end
@@ -1090,7 +1095,7 @@ class Poker
       elsif handObject[:largestPair][1] == 3
       return 4
       # Two Pairs: Two different pairs.
-      elsif (handObject[:uniqueValues]==3 && handObject[:largestPair][1] == 2)
+      elsif (handObject[:uniqueValues]==3 && handObject[:largestPair][1][1]   == 2)
       return 3
       # One Pair: Two cards of the same value.
       elsif handObject[:largestPair][1] == 2
@@ -1149,9 +1154,14 @@ class Poker
   # tiebreaker for those that are by highest card
   def self.highCardTiebreak (hand)
     # There are no tied straights, but I was checking for a-5 straight against another
-    if @player1Hands[hand][:rank] == 5
-    # TODO nothing here right now
-
+    if @player1Hands[hand][:rank] == 5 && ((@player1Hands[hand][:descendingValue][0]==14 && @player1Hands[hand][:descendingValue][1]==5) || (@player2Hands[hand][:descendingValue][0]==14 && @player2Hands[hand][:descendingValue][1]==5))
+      if @player1Hands[hand][:descendingValue][0]==14 && @player1Hands[hand][:descendingValue][1]==5 && @player2Hands[hand][:descendingValue][0]==14 && @player2Hands[hand][:descendingValue][1]==5
+        print 'they tied by both having a-5 straights'
+      elsif @player1Hands[hand][:descendingValue][0]==14 && @player1Hands[hand][:descendingValue][1]==5
+        @player2Wins = @player2Wins +1
+      elsif @player2Hands[hand][:descendingValue][0]==14 && @player2Hands[hand][:descendingValue][1]==5
+        @player1Wins = @player1Wins +1
+      end
     elsif @player1Hands[hand][:descendingValue][0] > @player2Hands[hand][:descendingValue][0]
       @player1Wins = @player1Wins +1
     elsif @player2Hands[hand][:descendingValue][0] > @player1Hands[hand][:descendingValue][0]
@@ -1175,7 +1185,7 @@ class Poker
   def self.highPairTiebreak (hand)
     # print @player2Hands[hand]
 
-   if @player1Hands[hand][:largestPair][0] > @player2Hands[hand][:largestPair][0]
+   if @player1Hands[hand][:largestPair][0] > @player2Hands[hand][:largestPair][0] && @player2Hands[hand][:rank] != 3
       @player1Wins = @player1Wins +1
     elsif @player2Hands[hand][:largestPair][0] > @player1Hands[hand][:largestPair][0]
       @player2Wins = @player2Wins +1
@@ -1183,8 +1193,21 @@ class Poker
     elsif @player2Hands[hand][:largestPair][0] == @player1Hands[hand][:largestPair][0] && @player2Hands[hand][:rank] == 2
     highCardTiebreak(hand)
     # tied 2 pair, go to 2nd pair. Doesnt happen in this problem
-    elsif @player2Hands[hand][:largestPair][0] == @player1Hands[hand][:largestPair][0] && @player2Hands[hand][:rank] == 3
-    # TODO nothing here right now
+    elsif  @player2Hands[hand][:rank] == 3
+      # Test for first pair
+      if @player1Hands[hand][:largestPair][0][0] > @player2Hands[hand][:largestPair][0][0]
+        @player1Wins = @player1Wins +1
+      elsif  @player2Hands[hand][:largestPair][0][0] > @player1Hands[hand][:largestPair][0][0]
+        @player2Wins = @player2Wins +1
+        # Test for 2nd pair
+      elsif @player1Hands[hand][:largestPair][1][0] > @player2Hands[hand][:largestPair][1][0]
+          @player1Wins = @player1Wins +1
+      elsif @player2Hands[hand][:largestPair][1][0] > @player1Hands[hand][:largestPair][1][0]
+          @player2Wins = @player2Wins +1
+      else
+        #both pairs match and we go to high card for the 5th card
+        highCardTiebreak(hand)
+      end
     end
   end
 
