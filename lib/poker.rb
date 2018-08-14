@@ -1053,6 +1053,7 @@ class Poker
     def self.largestPair(pairObject)
       if (pairObject != false)
         sortedObject = pairObject.sort_by {|k,v| k}.reverse
+        print sortedObject
         sortedObject.max_by{|k,v| v}
       else
       return 1
